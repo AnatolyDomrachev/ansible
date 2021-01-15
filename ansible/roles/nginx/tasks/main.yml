@@ -1,0 +1,22 @@
+---
+- name: Install Nginx Web Server on Debian Family
+  apt:
+    name=nginx
+    state=latest
+  when:
+    ansible_os_family == "Debian"
+  notify:
+    - nginx systemd
+
+- name: Replace default
+  template:
+    src=templates/default
+    dest=/etc/nginx/sites-enabled/default
+
+- name: create /opt/service_state
+  template:
+    src=templates/service_state
+    dest=/opt/service_state
+
+- name: nginx restart
+  shell: "/bin/systemctl restart nginx.service"
