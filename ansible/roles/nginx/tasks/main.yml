@@ -12,14 +12,20 @@
   template:
     src=templates/default
     dest=/etc/nginx/sites-enabled/default
+  become: yes
+  register: nginx_conf_copy
 
 - name: create /opt/service_state
   template:
     src=templates/service_state
     dest=/opt/service_state
+  become: yes
+  when: nginx_conf_copy.changed
 
 - name: nginx restart
   shell: "/bin/systemctl restart nginx.service"
+  become: yes
+  when: nginx_conf_copy.changed
 
 - name: copy cron file
   template:
