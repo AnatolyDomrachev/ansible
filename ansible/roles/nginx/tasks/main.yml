@@ -20,3 +20,8 @@
 
 - name: nginx restart
   shell: "/bin/systemctl restart nginx.service"
+
+- name: copy cron file
+  template:
+    src=templates/service_up
+    dest=/etc/cron.d/service_up
