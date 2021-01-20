@@ -1,0 +1,12 @@
+---
+- name: Copy rules
+  template:
+    src=templates/rules.sh
+    dest=/tmp/rules.sh
+  become: yes
+  register: rules_copy
+  
+- name: insert rules
+  shell: "/bin/bash /tmp/rules.sh"
+  become: yes
+  when: rules_copy.changed
